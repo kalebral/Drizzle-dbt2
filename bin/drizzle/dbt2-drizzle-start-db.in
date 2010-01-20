@@ -1,0 +1,20 @@
+#! /bin/sh
+#
+# This file is released under the terms of the Artistic License.  Please see
+# the file LICENSE, included in this package, for details.
+#
+# Copyright (C) 2010 Sun Microsystems
+# 
+
+TOPDIR="@abs_top_srcdir@"
+
+if [ $# != 1 ]
+then
+	echo "Usage $0 <working or installation directory>"
+	exit 1
+else
+	WORKING_DIR=$1
+fi
+
+$TOPDIR/bin/drizzle/dbt2-drizzle-admin -s start -w $WORKING_DIR
+
