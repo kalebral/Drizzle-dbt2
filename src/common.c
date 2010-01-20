@@ -177,7 +177,12 @@ int init_common()
 	{
 		a_string_char[j++] = (char) i;
 	}
+/* drizzle only accepts valid UTF8 characters */
+#if defined(LIBDRIZZLE)
+        for (i = 45; i <= 80; i++)
+#else
 	for (i = 220; i <= 255; i++)
+#endif
 	{
 		a_string_char[j++] = (char) i;
 	}

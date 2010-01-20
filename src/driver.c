@@ -152,11 +152,11 @@ int integrity_terminal_worker()
 			&client_data.transaction_data, table_cardinality.warehouses);
 
 #ifdef DEBUG
-	printf("executing transaction %c\n", 
+	printf("executing transaction %c\n",
 			 transaction_short_name[client_data.transaction]);
 	fflush(stdout);
 
-	LOG_ERROR_MESSAGE("executing transaction %c", 
+	LOG_ERROR_MESSAGE("executing transaction %c",
 			transaction_short_name[client_data.transaction]);
 #endif /* DEBUG */
 
@@ -449,6 +449,10 @@ void *terminal_worker(void *data)
 	extern char dbt2_mysql_port[32];
 #endif /* LIBMYSQL */
 
+#ifdef LIBDRIZZLE
+        extern char dbt2_drizzle_port[32];
+#endif /* LIBDRIZZLE */
+
 #endif /* STANDALONE */
 
 	tc = (struct terminal_context_t *) data;
@@ -480,6 +484,10 @@ void *terminal_worker(void *data)
 	printf("CONNECTED TO DB |%s| |%s| |%s|\n", DB_NAME, sname, dbt2_mysql_port);
 	db_init(sname, "", dbt2_mysql_port);
 #endif /* LIBMYSQL */
+#ifdef LIBDRIZZLE
+        printf("CONNECTED TO DB |%s| |%s| |%s|\n", DB_NAME, sname, dbt2_drizzle_port);
+        db_init(sname, "", dbt2_drizzle_port);
+#endif /* LIBDRIZZLE */
 #ifdef LIBSQLITE
 	db_init(sname);
 #endif /* LIBSQLITE */
@@ -540,10 +548,10 @@ void *terminal_worker(void *data)
 		}
 
 #ifdef DEBUG
-		printf("executing transaction %c\n", 
+		printf("executing transaction %c\n",
 			transaction_short_name[client_data.transaction]);
 		fflush(stdout);
-		LOG_ERROR_MESSAGE("executing transaction %c", 
+		LOG_ERROR_MESSAGE("executing transaction %c",
 			transaction_short_name[client_data.transaction]);
 #endif /* DEBUG */
 
