@@ -125,7 +125,7 @@ ELSEIF (DBMS STREQUAL "drizzle")
     # Create Drizzle specific configuration.
     #
 
-    SET(DRIZZLE_SOURCE src/drizzle/dbc_common.c
+    SET(DB_SOURCE src/drizzle/dbc_common.c
                        src/nonsp/dbc_new_order.c
                        src/nonsp/dbc_payment.c
                        src/nonsp/dbc_order_status.c
@@ -147,10 +147,6 @@ ELSEIF (DBMS STREQUAL "drizzle")
     MESSAGE(STATUS "Drizzle configuration build flags :  ${DBCFLAGS}")
     MESSAGE(STATUS "Drizzle configuration library flags:  ${DB_LIBS}")
 
-    CONFIGURE_FILE(bin/drizzle/dbt2-drizzle-start-db.in
-            bin/dbt2-drizzle-start-db  @ONLY)
-    CONFIGURE_FILE(bin/drizzle/dbt2-drizzle-stop-db.in
-            bin/dbt2-drizzle-stop-db  @ONLY)
     SET(DB_SCRIPTS bin/drizzle/dbt2-drizzle_admin
             bin/drizzle/dbt2-drizzle-load-db
             bin/drizzle/dbt2-drizzle-start-db

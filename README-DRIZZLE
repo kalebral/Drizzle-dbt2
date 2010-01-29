@@ -2,18 +2,19 @@ To build and run with Drizzle, run the following steps:
 
 1. Build the tools
 	 % rm -f CMakeCache.txt
-	 % cmake CMakeLists.txt -DWITH-DB="drizzle" && make
+	 % cmake CMakeLists.txt -DDB="drizzle" && make
 
-2. Generate the data
+2. Generate the data, specifying the number of warehouses with the -w option and the location of where to store the generated data.
 
 	% ./bin/dbt2-datagen -w 10  -d /tmp/data --drizzle
 
-3. Load the data into the database (assumes you have a version of drizzled already running)
+3. Load the data into the database (assumes you have a version of drizzled already running) specifying the path of the generated data and the path to the drizzle client
 
 	% ./bin/drizzle/dbt2-drizzle-load-db --path /tmp/data --drizzle_path <path to drizzle client>
 
-4. Run the test and generate output
+4. Set your path accordinglyl and then run the test and generate test results
 
+	% export PATH=$PATH:<dbt2 repository>/bin:<dbt2 repository/bin/drizzle
 	% chmod +x ./bin/drizzle/dbt2-drizzle-run
         % mkdir -p /tmp/dbt2
 	% ./bin/drizzle/dbt2-drizzle-run --connections 10 --time 300 --warehouses 10 --output-base /tmp/dbt2 --host 127.0.0.1
@@ -41,12 +42,11 @@ data
 
 Results and log files can be found in <output dir>/output/<number>
 
-Some of the usefull log files:
+Some of the useful log files:
 
   <output dir>/output/<number>/client/error.log - client errors
   <output dir>/output/<number>/driver/error.log - driver errors
   <output dir>/output/<number>/driver/mix.log - info about performed transactions
   <output dir>/output/<number>/driver/statistics.out - results of the test
-
 
 
