@@ -349,7 +349,7 @@ done
 # Check parameters.
 
 if [ "x${DBMS}" = "x" ]; then
-	echo "specify which dbms system to test using -a <mysql|pgsql|sqlite>"
+	echo "specify which dbms system to test using -a <drizzle|mysql|pgsql|sqlite>"
 	exit 1
 fi
 
@@ -441,7 +441,11 @@ if [ -n ${DB_HOSTNAME} ] && [ ! "x${DB_HOSTNAME}" = "xlocalhost" ]; then
 	${DB_COMMAND} "uname -a >> ${DB_OUTPUT_DIR}/readme.txt"
 fi
 
-${DB_COMMAND} dbt2-${DBMS}-stop-db ${WORKING_DIR}
+if [ "x${DBMS}" = "xdrizzle" ]; then
+	${DB_COMMAND} dbt2-${DBMS}-stop-db ${WORKING_DIR}
+else
+	${DB_COMMAND} dbt2-${DBMS}-stop-db
+fi
 if [ $? -ne 0 ]; then
 	echo "cleaning up results..."
 	rm -rf ${OUTPUT_DIR}
@@ -649,7 +653,11 @@ echo "Stage 3. Processing of results..."
 echo "Killing client..."
 killall dbt2-client dbt2-driver 2> /dev/null
 
-${DB_COMMAND} dbt2-${DBMS}-stop-db ${WORKING_DIR}
+if [ "x${DBMS}" = "xdrizzle" ]; then
+	${DB_COMMAND} dbt2-${DBMS}-stop-db ${WORKING_DIR}
+else
+	${DB_COMMAND} dbt2-${DBMS}-stop-db
+fi
 if [ ${DBMS} = "pgsql" ]; then
 	if [ ${USE_PGPOOL} -eq 1 ]; then
 		pgpool -f ${DIR}/pgsql/pgpool.conf stop
