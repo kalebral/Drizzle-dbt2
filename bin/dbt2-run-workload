@@ -452,12 +452,16 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 if [ -n "${DB_COMMAND}" ]; then
-	${DB_COMMAND} dbt2-${DBMS}-start-db -p "${DB_PARAMS}" -o ${DB_OUTPUT_DIR} || exit 1
+	if [ "x${DBMS}" = "xdrizzle" ]; then
+		${DB_COMMAND} "dbt2-${DBMS}-start-db ${WORKING_DIR}" || exit 1
+	else
+		${DB_COMMAND} "dbt2-${DBMS}-start-db -p \"${DB_PARAMS}\" -o ${DB_OUTPUT_DIR}" || exit 1
+	fi
 else
 	if [ "x${DBMS}" = "xdrizzle" ]; then
 		dbt2-${DBMS}-start-db ${WORKING_DIR} || exit 1
 	else
-		dbt2-${DBMS}-start-db -p \"${DB_PARAMS}\" -o ${DB_OUTPUT_DIR} || exit 1
+		dbt2-${DBMS}-start-db -p "${DB_PARAMS}" -o ${DB_OUTPUT_DIR} || exit 1
 	fi
 fi
 
